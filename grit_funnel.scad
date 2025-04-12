@@ -17,7 +17,7 @@ DUMMY = false;
 $fn = DUMMY ? 10 : 60;
 
 IS_RESERVOIR = true;
-IS_RESERVOIR_GATE = false;
+IS_RESERVOIR_GATE = true;
 
 TUBE_OD = 25.4*(3/8);
 TUBE_ID = IS_RESERVOIR ? TUBE_OD : 25.4*(1/4);
@@ -92,14 +92,17 @@ if (!IS_RESERVOIR_GATE) { // Enums would be nice
 }
 
 if (IS_RESERVOIR_GATE) color("red") {
+  SLOP = 0.25;
   cmirror([0,1,0]) tz(HEIGHT-SPOUT_OD/2+SPOUT_H) {
     difference() {
-      ty(-SPOUT_OD/2) cube([50,SPOUT_OD,WALL]);
+      ty(-SPOUT_OD/2) cube([50,SPOUT_OD+SLOP,WALL]);
       tx(50-SPOUT_OD) cylinder(d=SPOUT_OD, h=$FOREVER, center=true);
     }
     cylinder(d=SPOUT_OD,h=WALL);
-    tz(-WALL*2) tx(SPOUT_OD/2) ty(SPOUT_OD/2) cube([50-SPOUT_OD/2,WALL,WALL*3]);
-    tz(-WALL) ty(SPOUT_OD/2) tx(SPOUT_OD/2) rx(-135) cube([50-SPOUT_OD/2,WALL,WALL]);
-    tz(-WALL*2-WALL*3) tx(SPOUT_OD/2+40-SPOUT_OD/2) ty(SPOUT_OD/2) cube([10,WALL,WALL*6]);
+    ty(SLOP) {
+      tz(-WALL*2) tx(SPOUT_OD/2) ty(SPOUT_OD/2) cube([50-SPOUT_OD/2,WALL,WALL*3]);
+      tz(-WALL) ty(SPOUT_OD/2) tx(SPOUT_OD/2) rx(-135) cube([50-SPOUT_OD/2,WALL,WALL]);
+      tz(-WALL*2-WALL*3) tx(SPOUT_OD/2+40-SPOUT_OD/2) ty(SPOUT_OD/2) cube([10,WALL,WALL*6]);
+    }
   }
 }
